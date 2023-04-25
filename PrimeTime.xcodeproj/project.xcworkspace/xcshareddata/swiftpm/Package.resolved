@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "composablearchitechture",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/asobolevsky/ComposableArchitechture",
+      "state" : {
+        "revision" : "3697808cf2c30812959f80e4bd4f90d3fbc9c8f5",
+        "version" : "0.0.6"
+      }
+    }
+  ],
+  "version" : 2
+}
