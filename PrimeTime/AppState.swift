@@ -102,16 +102,17 @@ func logging<State, Action>(
     _ reducer: @escaping Reducer<State, Action>
 ) -> Reducer<State, Action> {
     return { state, action in 
-        let effect = reducer(&state, action)
+        let effects = reducer(&state, action)
         let newState = state
 
-        return {
+        return [{
             print("Action: \(action)")
             print("Value:")
             dump(newState)
             print("---")
-            effect()
-        }
+            
+            return nil
+        }] + effects
     }
 }
 

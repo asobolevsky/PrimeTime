@@ -43,39 +43,51 @@ private var favoritePrimesFileUrl: URL {
     return documentsUrl.appendingPathComponent("favorite-primes.json")
 }
 
-public func favoritePrimesReducer(state: inout FavoritePrimesState, action: FavoritePrimesAction) -> Effect {
+public func favoritePrimesReducer(
+    state: inout FavoritePrimesState,
+    action: FavoritePrimesAction
+) -> [Effect<FavoritePrimesAction>] {
     switch action {
     case let .deleteFavoritePrimes(indexSet):
         for index in indexSet {
             let prime = state.sortedPrimes[index]
             state.primes.remove(prime)
         }
-        return {}
+        return []
 
     case let .updateFavoritePrimes(favoritePrimes):
         state.primes = favoritePrimes
-        return {}
+        return []
 
     case .saveFavoritePrimes:
-        let state = state
-        return {
-            do {
-                let data = try JSONEncoder().encode(state.primes)
-                try data.write(to: favoritePrimesFileUrl)
-            } catch {
-                print(error)
-            }
-        }
+        return [saveEffect(favoritePrimes: state.primes)]
 
     case .loadFavoritePrimes:
-        return {
-            do {
-                let data = try Data(contentsOf: favoritePrimesFileUrl)
-                let favoritePrimes = try JSONDecoder().decode(Set<Int>.self, from: data)
-                //            store.send(.updateFavoritePrimes(favoritePrimes))
-            } catch {
-                print(error)
-            }
+        return [loadEffect()]
+    }
+}
+
+private func saveEffect(favoritePrimes: Set<Int>) -> Effect<FavoritePrimesAction> {
+    return {
+        do {
+            let data = try JSONEncoder().encode(favoritePrimes)
+            try data.write(to: favoritePrimesFileUrl)
+        } catch {
+            print(error)
+        }
+        return nil
+    }
+}
+
+private func loadEffect() -> Effect<FavoritePrimesAction> {
+    return {
+        do {
+            let data = try Data(contentsOf: favoritePrimesFileUrl)
+            let favoritePrimes = try JSONDecoder().decode(Set<Int>.self, from: data)
+            return .updateFavoritePrimes(favoritePrimes)
+        } catch {
+            print(error)
+            return nil
         }
     }
 }
