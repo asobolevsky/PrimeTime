@@ -68,26 +68,24 @@ public func favoritePrimesReducer(
 }
 
 private func saveEffect(favoritePrimes: Set<Int>) -> Effect<FavoritePrimesAction> {
-    return {
+    return { _ in
         do {
             let data = try JSONEncoder().encode(favoritePrimes)
             try data.write(to: favoritePrimesFileUrl)
         } catch {
             print(error)
         }
-        return nil
     }
 }
 
 private func loadEffect() -> Effect<FavoritePrimesAction> {
-    return {
+    return { callback in
         do {
             let data = try Data(contentsOf: favoritePrimesFileUrl)
             let favoritePrimes = try JSONDecoder().decode(Set<Int>.self, from: data)
-            return .updateFavoritePrimes(favoritePrimes)
+            callback(.updateFavoritePrimes(favoritePrimes))
         } catch {
             print(error)
-            return nil
         }
     }
 }
@@ -104,7 +102,7 @@ public struct FavoritePrimesView: View {
 
     public var body: some View {
         List {
-            ForEach(store.state.sortedPrimes, id: \.self) { number in
+            ForEach(store.value.sortedPrimes, id: \.self) { number in
                 Text("\(number)")
             }
             .onDelete { indexSet in
@@ -115,8 +113,8 @@ public struct FavoritePrimesView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 HStack {
-                    Button("Load") { store.send(.saveFavoritePrimes) }
-                    Button("Save") { store.send(.loadFavoritePrimes) }
+                    Button("Load") { store.send(.loadFavoritePrimes) }
+                    Button("Save") { store.send(.saveFavoritePrimes) }
                 }
             }
         }

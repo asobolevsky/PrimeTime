@@ -12,7 +12,7 @@ import SwiftUI
 
 // MARK: -
 
-public typealias CounterState = (count: Int, favoritePrimes: FavoritePrimesState)
+public typealias PrimeModalState = (count: Int, favoritePrimes: FavoritePrimesState)
 
 // MARK: - Actions
 
@@ -23,14 +23,14 @@ public enum PrimeModalAction {
 
 // MARK: - Reducers
 
-public func primeModalReducer(state: inout FavoritePrimesState, action: PrimeModalAction) -> [Effect<PrimeModalAction>] {
+public func primeModalReducer(state: inout PrimeModalState, action: PrimeModalAction) -> [Effect<PrimeModalAction>] {
     switch action {
     case .saveFavoritePrime(let prime):
-        state.primes.insert(prime)
+        state.favoritePrimes.primes.insert(prime)
         return []
 
     case .removeFavoritePrime(let prime):
-        state.primes.remove(prime)
+        state.favoritePrimes.primes.remove(prime)
         return []
     }
 }
@@ -38,32 +38,32 @@ public func primeModalReducer(state: inout FavoritePrimesState, action: PrimeMod
 // MARK: - Views
 
 public struct PrimeCheckView: View {
-    @ObservedObject var store: Store<CounterState, PrimeModalAction>
+    @ObservedObject var store: Store<PrimeModalState, PrimeModalAction>
 
-    public init(store: Store<CounterState, PrimeModalAction>) {
+    public init(store: Store<PrimeModalState, PrimeModalAction>) {
         self.store = store
     }
 
     public var body: some View {
         VStack {
-            if isPrime(store.state.count) {
-                Text("\(store.state.count) is prime 🎉")
+            if isPrime(store.value.count) {
+                Text("\(store.value.count) is prime 🎉")
 
-                if store.state.favoritePrimes.primes.contains(store.state.count) {
+                if store.value.favoritePrimes.primes.contains(store.value.count) {
                     Button {
-                        store.send(.removeFavoritePrime(store.state.count))
+                        store.send(.removeFavoritePrime(store.value.count))
                     } label: {
                         Text("Remove from favorite primes")
                     }
                 } else {
                     Button {
-                        store.send(.saveFavoritePrime(store.state.count))
+                        store.send(.saveFavoritePrime(store.value.count))
                     } label: {
                         Text("Save to favorite primes")
                     }
                 }
             } else {
-                Text("\(store.state.count) is not prime :(")
+                Text("\(store.value.count) is not prime :(")
             }
         }
     }

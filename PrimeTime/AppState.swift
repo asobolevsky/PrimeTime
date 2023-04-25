@@ -36,14 +36,20 @@ struct AppState {
     }
 }
 
+extension AppState {
+    var counter: CounterViewState {
+        get { CounterViewState() }
+        set {}
+    }
+}
+
 // MARK: - Actions
 
 enum AppAction {
-    case counter(CounterAction)
-    case primeModal(PrimeModalAction)
+    case counter(CounterViewAction)
     case favoritePrimes(FavoritePrimesAction)
 
-    var counter: CounterAction? {
+    var counter: CounterViewAction? {
         get {
             guard case let .counter(value) = self else { return nil }
             return value
@@ -51,17 +57,6 @@ enum AppAction {
         set {
             guard case .counter = self, let newValue = newValue else { return }
             self = .counter(newValue)
-        }
-    }
-
-    var primeModal: PrimeModalAction? {
-        get {
-            guard case let .primeModal(value) = self else { return nil }
-            return value
-        }
-        set {
-            guard case .primeModal = self, let newValue = newValue else { return }
-            self = .primeModal(newValue)
         }
     }
 
@@ -98,27 +93,8 @@ func activityFeed(
     }
 }
 
-func logging<State, Action>(
-    _ reducer: @escaping Reducer<State, Action>
-) -> Reducer<State, Action> {
-    return { state, action in 
-        let effects = reducer(&state, action)
-        let newState = state
-
-        return [{
-            print("Action: \(action)")
-            print("Value:")
-            dump(newState)
-            print("---")
-            
-            return nil
-        }] + effects
-    }
-}
-
 let _appReducer: Reducer<AppState, AppAction> = combine(
-    pullback(counterReducer, value: \.count, action: \.counter),
-    pullback(primeModalReducer, value: \.favoritePrimes, action: \.primeModal),
+    pullback(counterViewReducer, value: \.counter, action: \.counter),
     pullback(favoritePrimesReducer, value: \.favoritePrimes, action: \.favoritePrimes)
 )
 

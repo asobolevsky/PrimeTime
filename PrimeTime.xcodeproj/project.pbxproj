@@ -12,8 +12,6 @@
 		5FDFBFF429F20ABF003393F1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5FDFBFF329F20ABF003393F1 /* Assets.xcassets */; };
 		5FDFBFF729F20ABF003393F1 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5FDFBFF629F20ABF003393F1 /* Preview Assets.xcassets */; };
 		5FDFBFFE29F20B39003393F1 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FDFBFFD29F20B39003393F1 /* AppState.swift */; };
-		5FDFC00229F20C22003393F1 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FDFC00129F20C22003393F1 /* Utils.swift */; };
-		5FDFC00429F20C39003393F1 /* Wolfram.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FDFC00329F20C39003393F1 /* Wolfram.swift */; };
 		5FDFC00E29F2145F003393F1 /* Counter.docc in Sources */ = {isa = PBXBuildFile; fileRef = 5FDFC00D29F2145F003393F1 /* Counter.docc */; };
 		5FDFC01429F2145F003393F1 /* Counter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDFC00A29F2145F003393F1 /* Counter.framework */; };
 		5FDFC01B29F2145F003393F1 /* CounterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FDFC01A29F2145F003393F1 /* CounterTests.swift */; };
@@ -41,6 +39,10 @@
 		5FDFC07D29F608E8003393F1 /* ComposableArchitechture in Frameworks */ = {isa = PBXBuildFile; productRef = 5FDFC07C29F608E8003393F1 /* ComposableArchitechture */; };
 		5FDFC07F29F6C27F003393F1 /* ComposableArchitechture in Frameworks */ = {isa = PBXBuildFile; productRef = 5FDFC07E29F6C27F003393F1 /* ComposableArchitechture */; };
 		5FDFEDF529F7315100DB12DC /* ComposableArchitechture in Frameworks */ = {isa = PBXBuildFile; productRef = 5FDFEDF429F7315100DB12DC /* ComposableArchitechture */; };
+		D6B8394829F860CF00BD27C3 /* PrimeModal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDFC02D29F21473003393F1 /* PrimeModal.framework */; };
+		D6B8394929F860CF00BD27C3 /* PrimeModal.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDFC02D29F21473003393F1 /* PrimeModal.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D6B8394D29F861AB00BD27C3 /* Wolfram.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FDFC00329F20C39003393F1 /* Wolfram.swift */; };
+		D6B8394E29F86E3000BD27C3 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FDFC00129F20C22003393F1 /* Utils.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -114,6 +116,13 @@
 			remoteGlobalIDString = 5FDFC04E29F21480003393F1;
 			remoteInfo = FavoritePrimes;
 		};
+		D6B8394A29F860CF00BD27C3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5FDFBFE429F20ABD003393F1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5FDFC02C29F21473003393F1;
+			remoteInfo = PrimeModal;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -137,6 +146,17 @@
 			dstSubfolderSpec = 10;
 			files = (
 				5FDFC07729F21AAA003393F1 /* FavoritePrimes.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D6B8394C29F860CF00BD27C3 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				D6B8394929F860CF00BD27C3 /* PrimeModal.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -189,6 +209,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D6B8394829F860CF00BD27C3 /* PrimeModal.framework in Frameworks */,
 				5FDFEDF529F7315100DB12DC /* ComposableArchitechture in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -270,8 +291,6 @@
 		5FDFBFEE29F20ABD003393F1 /* PrimeTime */ = {
 			isa = PBXGroup;
 			children = (
-				5FDFC00129F20C22003393F1 /* Utils.swift */,
-				5FDFC00329F20C39003393F1 /* Wolfram.swift */,
 				5FDFBFEF29F20ABD003393F1 /* PrimeTimeApp.swift */,
 				5FDFBFF129F20ABD003393F1 /* ContentView.swift */,
 				5FDFBFFD29F20B39003393F1 /* AppState.swift */,
@@ -292,6 +311,8 @@
 		5FDFC00B29F2145F003393F1 /* Counter */ = {
 			isa = PBXGroup;
 			children = (
+				5FDFC00129F20C22003393F1 /* Utils.swift */,
+				5FDFC00329F20C39003393F1 /* Wolfram.swift */,
 				5FDFC00C29F2145F003393F1 /* Counter.h */,
 				5FDFC00D29F2145F003393F1 /* Counter.docc */,
 				5FDFC07129F21A33003393F1 /* Counter.swift */,
@@ -412,10 +433,12 @@
 				5FDFC00629F2145F003393F1 /* Sources */,
 				5FDFC00729F2145F003393F1 /* Frameworks */,
 				5FDFC00829F2145F003393F1 /* Resources */,
+				D6B8394C29F860CF00BD27C3 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				D6B8394B29F860CF00BD27C3 /* PBXTargetDependency */,
 			);
 			name = Counter;
 			packageProductDependencies = (
@@ -648,8 +671,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5FDFC00429F20C39003393F1 /* Wolfram.swift in Sources */,
-				5FDFC00229F20C22003393F1 /* Utils.swift in Sources */,
 				5FDFBFFE29F20B39003393F1 /* AppState.swift in Sources */,
 				5FDFBFF229F20ABD003393F1 /* ContentView.swift in Sources */,
 				5FDFBFF029F20ABD003393F1 /* PrimeTimeApp.swift in Sources */,
@@ -660,8 +681,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D6B8394D29F861AB00BD27C3 /* Wolfram.swift in Sources */,
 				5FDFC07229F21A33003393F1 /* Counter.swift in Sources */,
 				5FDFC00E29F2145F003393F1 /* Counter.docc in Sources */,
+				D6B8394E29F86E3000BD27C3 /* Utils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -759,6 +782,11 @@
 			isa = PBXTargetDependency;
 			target = 5FDFC04E29F21480003393F1 /* FavoritePrimes */;
 			targetProxy = 5FDFC07829F21AAA003393F1 /* PBXContainerItemProxy */;
+		};
+		D6B8394B29F860CF00BD27C3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5FDFC02C29F21473003393F1 /* PrimeModal */;
+			targetProxy = D6B8394A29F860CF00BD27C3 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -886,7 +914,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"PrimeTime/Preview Content\"";
-				DEVELOPMENT_TEAM = 9E5FJ56WP5;
+				DEVELOPMENT_TEAM = VD5A48DU7B;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -894,6 +922,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -916,7 +945,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"PrimeTime/Preview Content\"";
-				DEVELOPMENT_TEAM = 9E5FJ56WP5;
+				DEVELOPMENT_TEAM = VD5A48DU7B;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -924,6 +953,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -950,6 +980,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -980,6 +1011,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1046,6 +1078,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1076,6 +1109,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1142,6 +1176,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1172,6 +1207,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
