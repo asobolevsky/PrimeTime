@@ -68,7 +68,7 @@ public func favoritePrimesReducer(
 }
 
 private func saveEffect(favoritePrimes: Set<Int>) -> Effect<FavoritePrimesAction> {
-    return { _ in
+    Effect { _ in
         do {
             let data = try JSONEncoder().encode(favoritePrimes)
             try data.write(to: favoritePrimesFileUrl)
@@ -79,7 +79,7 @@ private func saveEffect(favoritePrimes: Set<Int>) -> Effect<FavoritePrimesAction
 }
 
 private func loadEffect() -> Effect<FavoritePrimesAction> {
-    return { callback in
+    Effect { callback in
         do {
             let data = try Data(contentsOf: favoritePrimesFileUrl)
             let favoritePrimes = try JSONDecoder().decode(Set<Int>.self, from: data)

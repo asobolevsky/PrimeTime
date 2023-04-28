@@ -94,15 +94,11 @@ private func counterReducer(state: inout CounterState, action: CounterAction) ->
 
     case .nthPrimeButtonTapped:
         state.nthPrimeButtonDisabled = true
-        let count = state.count
-        return [{ callback in
-            fetchNthPrime(count) { response in
-                let prime = response != nil ? NthPrime(prime: response!) : nil
-                DispatchQueue.main.async {
-                    callback(.nthPrimeResponse(prime))
-                }
-            }
-        }]
+        return [
+            fetchNthPrime(state.count)
+                .map(CounterAction.nthPrimeResponse)
+                .receive(on: .main)
+        ]
 
     case let .nthPrimeResponse(response):
         state.nthPrime = response
@@ -112,29 +108,27 @@ private func counterReducer(state: inout CounterState, action: CounterAction) ->
     case .alertDismissButtonTapped:
         state.nthPrime = nil
         return []
-
     }
 }
 
-private func fetchNthPrime(_ n: Int, callback: @escaping (Int?) -> Void) -> Void {
-    wolframAlpha(query: "prime \(n)") { result in
-        callback(
-            result
-                .flatMap {
-                    $0.queryresult
-                        .pods
-                        .first(where: { $0.primary == .some(true) })?
-                        .subpods
-                        .first?
-                        .plaintext
-                }
-                .flatMap(Int.init)
-        )
+private func fetchNthPrime(_ n: Int) -> Effect<NthPrime?> {
+    wolframAlpha(query: "prime \(n)").map { result in
+        result
+            .flatMap {
+                $0.queryresult
+                    .pods
+                    .first(where: { $0.primary == .some(true) })?
+                    .subpods
+                    .first?
+                    .plaintext
+            }
+            .flatMap(Int.init)
+            .flatMap(NthPrime.init)
     }
 }
 
-public let counterViewReducer = combine(
-    pullback(counterReducer, value: \CounterViewState.counter, action: \CounterViewAction.counter),
+public let counterViewReducer: Reducer<CounterViewState, CounterViewAction> = combine(
+    pullback(counterReducer, value: \.counter, action: \.counter),
     pullback(primeModalReducer, value: \.primeModal, action: \.primeModal)
 )
 

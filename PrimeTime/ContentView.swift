@@ -21,8 +21,8 @@ struct ContentView: View {
                     destination: CounterView(
                         store: store
                             .view(
-                                state: { ($0.count, $0.favoritePrimes) },
-                                action: { $0 }
+                                value: { $0.counterView },
+                                action: { .counterView($0) }
                             )
                     )
                 ) {
@@ -32,7 +32,7 @@ struct ContentView: View {
                     destination: FavoritePrimesView(
                         store: store
                             .view(
-                                state: { $0.favoritePrimes },
+                                value: { $0.favoritePrimes },
                                 action: { .favoritePrimes($0) }
                             )
                     )
@@ -49,6 +49,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(store: Store(initialState: AppState(), reducer: appReducer))
+        ContentView(store: Store(initialValue: AppState(), reducer: appReducer))
     }
 }
