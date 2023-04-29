@@ -63,12 +63,16 @@ public func favoritePrimesReducer(
         return [saveEffect(favoritePrimes: state.primes)]
 
     case .loadFavoritePrimes:
-        return [loadEffect()]
+        return [
+            loadEffect()
+                .compactMap { $0 }
+                .eraseToEffect()
+        ]
     }
 }
 
 private func saveEffect(favoritePrimes: Set<Int>) -> Effect<FavoritePrimesAction> {
-    Effect { _ in
+    Effect.fireAndForget {
         do {
             let data = try JSONEncoder().encode(favoritePrimes)
             try data.write(to: favoritePrimesFileUrl)
@@ -78,14 +82,15 @@ private func saveEffect(favoritePrimes: Set<Int>) -> Effect<FavoritePrimesAction
     }
 }
 
-private func loadEffect() -> Effect<FavoritePrimesAction> {
-    Effect { callback in
+private func loadEffect() -> Effect<FavoritePrimesAction?> {
+    Effect.sync {
         do {
             let data = try Data(contentsOf: favoritePrimesFileUrl)
             let favoritePrimes = try JSONDecoder().decode(Set<Int>.self, from: data)
-            callback(.updateFavoritePrimes(favoritePrimes))
+            return .updateFavoritePrimes(favoritePrimes)
         } catch {
             print(error)
+            return nil
         }
     }
 }

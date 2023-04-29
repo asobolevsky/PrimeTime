@@ -34,6 +34,10 @@ func wolframAlpha(query: String) -> Effect<WolframAlphaResult?> {
         URLQueryItem(name: "appid", value: "R96K28-9H34P2JAW4"),
     ]
 
-    return dataTask(with: components.url(relativeTo: nil)!)
-        .decode(as: WolframAlphaResult.self)
+    return URLSession.shared
+        .dataTaskPublisher(for: components.url(relativeTo: nil)!)
+        .map { $0.data }
+        .decode(type: WolframAlphaResult?.self, decoder: JSONDecoder())
+        .replaceError(with: nil)
+        .eraseToEffect()
 }

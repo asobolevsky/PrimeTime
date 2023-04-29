@@ -97,7 +97,8 @@ private func counterReducer(state: inout CounterState, action: CounterAction) ->
         return [
             fetchNthPrime(state.count)
                 .map(CounterAction.nthPrimeResponse)
-                .receive(on: .main)
+                .receive(on: DispatchQueue.main)
+                .eraseToEffect()
         ]
 
     case let .nthPrimeResponse(response):
@@ -125,6 +126,7 @@ private func fetchNthPrime(_ n: Int) -> Effect<NthPrime?> {
             .flatMap(Int.init)
             .flatMap(NthPrime.init)
     }
+    .eraseToEffect()
 }
 
 public let counterViewReducer: Reducer<CounterViewState, CounterViewAction> = combine(
