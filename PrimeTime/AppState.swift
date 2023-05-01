@@ -15,7 +15,7 @@ import PrimeModal
 
 struct AppState {
     var count = 0
-    var favoritePrimes: FavoritePrimesState = FavoritePrimesState(primes: [1, 3, 5, 7])
+    var favoritePrimes = [1, 3, 5, 7]
     var loggedInUser: User? = nil
     var activityFeed: [Activity] = []
     var nthPrime: NthPrime? = nil
@@ -27,7 +27,7 @@ struct AppState {
 
         enum ActivityType {
             case addedFavoritePrime(Int)
-            case removedFavoritePrime(Int)
+            case deletedFavoritePrime(Int)
         }
     }
 
@@ -93,15 +93,15 @@ func activityFeed(
 ) -> Reducer<AppState, AppAction> {
     return { state, action in
         switch action {
-        case let .counterView(.primeModal(.removeFavoritePrime(prime))):
-            state.activityFeed.append(.init(type: .removedFavoritePrime(prime)))
+        case .counterView(.primeModal(.deleteFavoritePrime)):
+            state.activityFeed.append(.init(type: .deletedFavoritePrime(state.count)))
 
-        case let .counterView(.primeModal(.saveFavoritePrime(prime))):
-            state.activityFeed.append(.init(type: .addedFavoritePrime(prime)))
+        case .counterView(.primeModal(.saveFavoritePrime)):
+            state.activityFeed.append(.init(type: .addedFavoritePrime(state.count)))
 
         case let .favoritePrimes(.deleteFavoritePrimes(indexSet)):
             for index in indexSet {
-                state.activityFeed.append(.init(type: .removedFavoritePrime(state.favoritePrimes.sortedPrimes[index])))
+                state.activityFeed.append(.init(type: .deletedFavoritePrime(state.favoritePrimes[index])))
             }
 
         default: break

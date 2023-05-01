@@ -14,18 +14,18 @@ import SwiftUI
 
 typealias CounterState = (count: Int, nthPrime: NthPrime?, nthPrimeButtonDisabled: Bool)
 
-public struct NthPrime: Identifiable {
-    let prime: Int
+public struct NthPrime: Identifiable, Equatable {
     public var id: Int { self.prime }
+    let prime: Int
 }
 
-public struct CounterViewState {
+public struct CounterViewState: Equatable {
     public var count: Int
-    public var favoritePrimes: FavoritePrimesState
+    public var favoritePrimes: [Int]
     public var nthPrime: NthPrime?
     public var nthPrimeButtonDisabled: Bool
 
-    public init(count: Int, favoritePrimes: FavoritePrimesState, nthPrime: NthPrime?, nthPrimeButtonDisabled: Bool) {
+    public init(count: Int, favoritePrimes: [Int], nthPrime: NthPrime?, nthPrimeButtonDisabled: Bool) {
         self.count = count
         self.favoritePrimes = favoritePrimes
         self.nthPrime = nthPrime

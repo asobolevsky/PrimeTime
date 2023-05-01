@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "CA80D11D-F762-4A10-A7EC-37CEB8E58435",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "testTimeoutsEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:PrimeTime.xcodeproj",
+        "identifier" : "5FDFC01229F2145F003393F1",
+        "name" : "CounterTests"
+      }
+    }
+  ],
+  "version" : 1
+}

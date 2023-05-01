@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "67C9424E-02FC-4878-BB25-14288C941FBD",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "testTimeoutsEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:PrimeTime.xcodeproj",
+        "identifier" : "5FDFC05729F21480003393F1",
+        "name" : "FavoritePrimesTests"
+      }
+    }
+  ],
+  "version" : 1
+}

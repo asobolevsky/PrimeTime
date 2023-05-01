@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "415211CA-E404-4090-AEC4-22E399069E73",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:PrimeTime.xcodeproj",
+        "identifier" : "5FDFC03529F21473003393F1",
+        "name" : "PrimeModalTests"
+      }
+    }
+  ],
+  "version" : 1
+}

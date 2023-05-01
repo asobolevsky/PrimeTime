@@ -9,33 +9,21 @@ import ComposableArchitechture
 import Foundation
 import SwiftUI
 
-// MARK: - Model
+// MARK: - Models
 
-public struct FavoritePrimesState: Codable {
-    public var primes: Set<Int>
 
-    public init(primes: Set<Int>) {
-        self.primes = primes
-    }
-}
 
-public extension FavoritePrimesState {
-    var sortedPrimes: [Int] {
-        Array(primes).sorted()
-    }
-}
-
-// MAKR: - Actions
+// MARK: - Actions
 
 public enum FavoritePrimesAction {
     case deleteFavoritePrimes(IndexSet)
-    case updateFavoritePrimes(Set<Int>)
+    case updateFavoritePrimes([Int])
 
     case saveFavoritePrimes
     case loadFavoritePrimes
 }
 
-// MAKR: - Reducers
+// MARK: - Reducers
 
 private var favoritePrimesFileUrl: URL {
     let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
@@ -44,23 +32,20 @@ private var favoritePrimesFileUrl: URL {
 }
 
 public func favoritePrimesReducer(
-    state: inout FavoritePrimesState,
+    state: inout [Int],
     action: FavoritePrimesAction
 ) -> [Effect<FavoritePrimesAction>] {
     switch action {
     case let .deleteFavoritePrimes(indexSet):
-        for index in indexSet {
-            let prime = state.sortedPrimes[index]
-            state.primes.remove(prime)
-        }
+        indexSet.forEach { state.remove(at: $0) }
         return []
 
     case let .updateFavoritePrimes(favoritePrimes):
-        state.primes = favoritePrimes
+        state = favoritePrimes
         return []
 
     case .saveFavoritePrimes:
-        return [saveEffect(favoritePrimes: state.primes)]
+        return [saveEffect(favoritePrimes: state)]
 
     case .loadFavoritePrimes:
         return [
@@ -71,7 +56,7 @@ public func favoritePrimesReducer(
     }
 }
 
-private func saveEffect(favoritePrimes: Set<Int>) -> Effect<FavoritePrimesAction> {
+private func saveEffect(favoritePrimes: [Int]) -> Effect<FavoritePrimesAction> {
     Effect.fireAndForget {
         do {
             let data = try JSONEncoder().encode(favoritePrimes)
@@ -86,7 +71,7 @@ private func loadEffect() -> Effect<FavoritePrimesAction?> {
     Effect.sync {
         do {
             let data = try Data(contentsOf: favoritePrimesFileUrl)
-            let favoritePrimes = try JSONDecoder().decode(Set<Int>.self, from: data)
+            let favoritePrimes = try JSONDecoder().decode([Int].self, from: data)
             return .updateFavoritePrimes(favoritePrimes)
         } catch {
             print(error)
@@ -99,15 +84,15 @@ private func loadEffect() -> Effect<FavoritePrimesAction?> {
 // MARK: - Views
 
 public struct FavoritePrimesView: View {
-    @ObservedObject private var store: Store<FavoritePrimesState, FavoritePrimesAction>
+    @ObservedObject private var store: Store<[Int], FavoritePrimesAction>
 
-    public init(store: Store<FavoritePrimesState, FavoritePrimesAction>) {
+    public init(store: Store<[Int], FavoritePrimesAction>) {
         self.store = store
     }
 
     public var body: some View {
         List {
-            ForEach(store.value.sortedPrimes, id: \.self) { number in
+            ForEach(store.value, id: \.self) { number in
                 Text("\(number)")
             }
             .onDelete { indexSet in

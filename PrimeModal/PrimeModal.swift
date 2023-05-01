@@ -12,25 +12,25 @@ import SwiftUI
 
 // MARK: -
 
-public typealias PrimeModalState = (count: Int, favoritePrimes: FavoritePrimesState)
+public typealias PrimeModalState = (count: Int, favoritePrimes: [Int])
 
 // MARK: - Actions
 
 public enum PrimeModalAction {
-    case saveFavoritePrime(Int)
-    case removeFavoritePrime(Int)
+    case saveFavoritePrime
+    case deleteFavoritePrime
 }
 
 // MARK: - Reducers
 
 public func primeModalReducer(state: inout PrimeModalState, action: PrimeModalAction) -> [Effect<PrimeModalAction>] {
     switch action {
-    case .saveFavoritePrime(let prime):
-        state.favoritePrimes.primes.insert(prime)
+    case .saveFavoritePrime:
+        state.favoritePrimes.append(state.count)
         return []
 
-    case .removeFavoritePrime(let prime):
-        state.favoritePrimes.primes.remove(prime)
+    case .deleteFavoritePrime:
+        state.favoritePrimes.removeAll { $0 == state.count }
         return []
     }
 }
@@ -49,15 +49,15 @@ public struct PrimeCheckView: View {
             if isPrime(store.value.count) {
                 Text("\(store.value.count) is prime 🎉")
 
-                if store.value.favoritePrimes.primes.contains(store.value.count) {
+                if store.value.favoritePrimes.contains(store.value.count) {
                     Button {
-                        store.send(.removeFavoritePrime(store.value.count))
+                        store.send(.deleteFavoritePrime)
                     } label: {
-                        Text("Remove from favorite primes")
+                        Text("Delete from favorite primes")
                     }
                 } else {
                     Button {
-                        store.send(.saveFavoritePrime(store.value.count))
+                        store.send(.saveFavoritePrime)
                     } label: {
                         Text("Save to favorite primes")
                     }
