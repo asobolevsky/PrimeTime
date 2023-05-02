@@ -9,9 +9,22 @@ import ComposableArchitechture
 import Foundation
 import SwiftUI
 
+// MARK: - Clients
+
+struct FileClient {
+    var load: (String) -> Effect<Data?>
+    var save: (String, Data) -> Effect<???>
+}
+
 // MARK: - Models
 
+struct Environment {
+    var date: () -> Date
+}
 
+extension Environment {
+    static let live = Environment(date: Date.init)
+}
 
 // MARK: - Actions
 
