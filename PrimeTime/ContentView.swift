@@ -29,10 +29,21 @@ struct ContentView: View {
                     Text("Counter Demo")
                 }
                 NavigationLink(
+                    destination: CounterView(
+                        store: store
+                            .view(
+                                value: { $0.counterView },
+                                action: { .counterView($0) }
+                            )
+                    )
+                ) {
+                    Text("Offline Counter Demo")
+                }
+                NavigationLink(
                     destination: FavoritePrimesView(
                         store: store
                             .view(
-                                value: { $0.favoritePrimes },
+                                value: { $0.favoritePrimesState },
                                 action: { .favoritePrimes($0) }
                             )
                     )
@@ -49,6 +60,11 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(store: Store(initialValue: AppState(), reducer: appReducer))
+        let store = Store(
+            initialValue: AppState(),
+            environment: AppEnvironment.mock,
+            reducer: appReducer
+        )
+        ContentView(store: store)
     }
 }

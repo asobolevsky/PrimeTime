@@ -8,11 +8,11 @@
 import Foundation
 
 protocol Modifiable {
-    func modified<Value>(what: WritableKeyPath<Self, Value>, value: Value) -> Self
+    func modified<Value>(_ what: WritableKeyPath<Self, Value>, _ value: Value) -> Self
 }
 
 extension Modifiable {
-    func modified<Value>(what: WritableKeyPath<Self, Value>, value: Value) -> Self {
+    func modified<Value>(_ what: WritableKeyPath<Self, Value>, _ value: Value) -> Self {
         var state = self
         state[keyPath: what] = value
         return state

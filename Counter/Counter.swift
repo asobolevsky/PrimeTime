@@ -5,19 +5,21 @@
 //  Created by Aleksei Sobolevskii on 2023-04-20.
 //
 
+import CasePaths
+import Combine
+import CommonState
 import ComposableArchitechture
 import FavoritePrimes
 import PrimeModal
 import SwiftUI
 
+// MARK: - Environment
+
+public typealias CounterEnvironment = (Int) -> Effect<Int?>
+
 // MARK: - State
 
 typealias CounterState = (count: Int, nthPrime: NthPrime?, nthPrimeButtonDisabled: Bool)
-
-public struct NthPrime: Identifiable, Equatable {
-    public var id: Int { self.prime }
-    let prime: Int
-}
 
 public struct CounterViewState: Equatable {
     public var count: Int
@@ -25,7 +27,12 @@ public struct CounterViewState: Equatable {
     public var nthPrime: NthPrime?
     public var nthPrimeButtonDisabled: Bool
 
-    public init(count: Int, favoritePrimes: [Int], nthPrime: NthPrime?, nthPrimeButtonDisabled: Bool) {
+    public init(
+        count: Int = 0,
+        favoritePrimes: [Int] = [],
+        nthPrime: NthPrime? = nil,
+        nthPrimeButtonDisabled: Bool = false
+    ) {
         self.count = count
         self.favoritePrimes = favoritePrimes
         self.nthPrime = nthPrime
@@ -45,15 +52,15 @@ public struct CounterViewState: Equatable {
 
 // MARK: - Actions
 
-public enum CounterAction {
+public enum CounterAction: Equatable {
     case increment
     case decrement
     case nthPrimeButtonTapped
-    case nthPrimeResponse(NthPrime?)
+    case nthPrimeResponse(n: Int, prime: Int?)
     case alertDismissButtonTapped
 }
 
-public enum CounterViewAction {
+public enum CounterViewAction: Equatable {
     case counter(CounterAction)
     case primeModal(PrimeModalAction)
 
@@ -82,7 +89,11 @@ public enum CounterViewAction {
 
 // MARK: - Reducers
 
-private func counterReducer(state: inout CounterState, action: CounterAction) -> [Effect<CounterAction>] {
+private func counterReducer(
+    state: inout CounterState,
+    action: CounterAction,
+    environment: CounterEnvironment
+) -> [Effect<CounterAction>] {
     switch action {
     case .increment:
         state.count += 1
@@ -94,15 +105,16 @@ private func counterReducer(state: inout CounterState, action: CounterAction) ->
 
     case .nthPrimeButtonTapped:
         state.nthPrimeButtonDisabled = true
+        let n = state.count
         return [
-            fetchNthPrime(state.count)
-                .map(CounterAction.nthPrimeResponse)
+            environment(state.count)
+                .map { CounterAction.nthPrimeResponse(n: n, prime: $0) }
                 .receive(on: DispatchQueue.main)
                 .eraseToEffect()
         ]
 
-    case let .nthPrimeResponse(response):
-        state.nthPrime = response
+    case let .nthPrimeResponse(n, prime):
+        state.nthPrime = NthPrime(n: n, prime: prime)
         state.nthPrimeButtonDisabled = false
         return []
 
@@ -112,7 +124,7 @@ private func counterReducer(state: inout CounterState, action: CounterAction) ->
     }
 }
 
-private func fetchNthPrime(_ n: Int) -> Effect<NthPrime?> {
+public func fetchNthPrime(_ n: Int) -> Effect<Int?> {
     wolframAlpha(query: "prime \(n)").map { result in
         result
             .flatMap {
@@ -124,14 +136,49 @@ private func fetchNthPrime(_ n: Int) -> Effect<NthPrime?> {
                     .plaintext
             }
             .flatMap(Int.init)
-            .flatMap(NthPrime.init)
     }
     .eraseToEffect()
 }
 
-public let counterViewReducer: Reducer<CounterViewState, CounterViewAction> = combine(
-    pullback(counterReducer, value: \.counter, action: \.counter),
-    pullback(primeModalReducer, value: \.primeModal, action: \.primeModal)
+
+
+public func offlineNthPrime(_ n: Int) -> Effect<Int?> {
+    Future { callback in
+        var nthPrime = 1
+        var count = 0
+        while count <= n {
+            nthPrime += 1
+            if isPrime(nthPrime) {
+                count += 1
+            }
+        }
+        callback(.success(nthPrime))
+    }
+    .eraseToEffect()
+}
+
+private func isPrime(_ p: Int) -> Bool {
+    if p <= 1 { return false }
+    if p <= 3 { return true }
+    for i in 2...Int(sqrt(Double(p))) {
+        if p % i == 0 { return false }
+    }
+    return true
+}
+
+public let counterViewReducer: Reducer<CounterViewState, CounterViewAction, CounterEnvironment> = combine(
+    pullback(
+        counterReducer,
+        value: \.counter,
+        action: /CounterViewAction.counter,
+        environment: { $0 }
+    ),
+    pullback(
+        primeModalReducer,
+        value: \.primeModal,
+        action: /CounterViewAction.primeModal,
+        environment: { _ in () }
+    )
 )
 
 // MARK: - Views
@@ -171,9 +218,13 @@ public struct CounterView: View {
         }
         .alert(item: .constant(store.value.nthPrime)) { nthPrime in
             Alert(
-                title: Text("The \(ordinal(store.value.count)) prime is \(nthPrime.prime)"),
+                title: Text("The \(ordinal(nthPrime.n)) prime is \(nthPrime.prime ?? 0)"),
                 dismissButton: .default(Text("OK")) { store.send(.counter(.alertDismissButtonTapped)) }
             )
         }
     }
+}
+
+extension Int: Identifiable {
+    public var id: Int { self }
 }

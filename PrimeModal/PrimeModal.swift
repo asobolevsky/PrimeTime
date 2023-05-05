@@ -16,14 +16,18 @@ public typealias PrimeModalState = (count: Int, favoritePrimes: [Int])
 
 // MARK: - Actions
 
-public enum PrimeModalAction {
+public enum PrimeModalAction: Equatable {
     case saveFavoritePrime
     case deleteFavoritePrime
 }
 
 // MARK: - Reducers
 
-public func primeModalReducer(state: inout PrimeModalState, action: PrimeModalAction) -> [Effect<PrimeModalAction>] {
+public func primeModalReducer(
+    state: inout PrimeModalState,
+    action: PrimeModalAction,
+    environment: Void
+) -> [Effect<PrimeModalAction>] {
     switch action {
     case .saveFavoritePrime:
         state.favoritePrimes.append(state.count)
