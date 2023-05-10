@@ -3,4 +3,54 @@
    uuid = "6EDE6BAB-F0DC-47F0-BA34-DD3AE0D104A0"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "FEE8C626-D28F-4A28-AA74-C6E9DD092DC2"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PrimeTime/ContentView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "20"
+            endingLineNumber = "20"
+            landmarkName = "init(store:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "FEE8C626-D28F-4A28-AA74-C6E9DD092DC2 - 61f3f2220039b1ad"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; SwiftUI.TupleView&lt;(SwiftUI.NavigationLink&lt;SwiftUI.Text, Counter.CounterView&gt;, SwiftUI.NavigationLink&lt;SwiftUI.Text, Counter.CounterView&gt;, SwiftUI.NavigationLink&lt;SwiftUI.Text, FavoritePrimes.FavoritePrimesView&gt;)&gt; in closure #1 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.navigationTitle(SwiftUI.Text) -&gt; some&gt;&gt;.0 in PrimeTime.ContentView.body.getter : some"
+                  moduleName = "PrimeTime"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/aleksei/Developer/tuts/ios/pointfree/PrimeTime/PrimeTime/ContentView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "20"
+                  endingLineNumber = "20"
+                  offsetFromSymbolStart = "504">
+               </Location>
+               <Location
+                  uuid = "FEE8C626-D28F-4A28-AA74-C6E9DD092DC2 - cb6f20cbc15c1ae6"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PrimeTime.ContentView.init(store: ComposableArchitechture.Store&lt;PrimeTime.AppState, PrimeTime.AppAction&gt;) -&gt; PrimeTime.ContentView"
+                  moduleName = "PrimeTime"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/aleksei/Developer/tuts/ios/pointfree/PrimeTime/PrimeTime/ContentView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "20"
+                  endingLineNumber = "20"
+                  offsetFromSymbolStart = "280">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

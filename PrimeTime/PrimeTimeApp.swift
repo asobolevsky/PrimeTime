@@ -10,7 +10,7 @@ import SwiftUI
 
 @main
 struct PrimeTimeApp: App {
-    @StateObject private var store = Store(initialValue: AppState(), environment: AppEnvironment.live, reducer: appReducer)
+    private let store = Store(initialValue: AppState(), environment: AppEnvironment.live, reducer: appReducer)
 
     var body: some Scene {
         WindowGroup {

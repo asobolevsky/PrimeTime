@@ -61,7 +61,7 @@ final class PrimeTimeTests: XCTestCase {
     }
 
     func testSnapshots() {
-        let store = Store(initialValue: CounterViewState(), environment: { _ in .sync { nil } }, reducer: counterViewReducer)
+        let store = Store(initialValue: CounterFeatureState(), environment: { _ in .sync { nil } }, reducer: counterViewReducer)
         let view = CounterView(store: store)
 
         let vc = UIHostingController(rootView: view)

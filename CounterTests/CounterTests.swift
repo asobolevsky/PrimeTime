@@ -16,7 +16,7 @@ final class CounterTests: XCTestCase {
 
     func testCounterIncrement() {
         assert(
-            initialValue: CounterViewState(count: 2),
+            initialValue: CounterFeatureState(count: 2),
             reducer: counterViewReducer,
             environment: { _ in .sync { nil } },
             steps: [
@@ -28,7 +28,7 @@ final class CounterTests: XCTestCase {
 
     func testCounterDecrement() {
         assert(
-            initialValue: CounterViewState(count: 3),
+            initialValue: CounterFeatureState(count: 3),
             reducer: counterViewReducer,
             environment: { _ in .sync { 17 } },
             steps: [
@@ -40,7 +40,7 @@ final class CounterTests: XCTestCase {
 
     func testNthPrimeButtonHappyFlow() {
         assert(
-            initialValue: CounterViewState(count: 4, nthPrime: nil, nthPrimeButtonDisabled: false),
+            initialValue: CounterFeatureState(count: 4, nthPrime: nil, nthPrimeButtonDisabled: false),
             reducer: counterViewReducer,
             environment: { _ in .sync { 17 } },
             steps: [
@@ -56,7 +56,7 @@ final class CounterTests: XCTestCase {
 
     func testNthPrimeButtonUnhappyFlow() {
         assert(
-            initialValue: CounterViewState(count: 4, nthPrime: nil, nthPrimeButtonDisabled: false),
+            initialValue: CounterFeatureState(count: 4, nthPrime: nil, nthPrimeButtonDisabled: false),
             reducer: counterViewReducer,
             environment: { _ in .sync { nil } },
             steps: [
@@ -71,7 +71,7 @@ final class CounterTests: XCTestCase {
 
     func testDeleteFavoritePrime() {
         assert(
-            initialValue: CounterViewState(
+            initialValue: CounterFeatureState(
                 count: 7,
                 favoritePrimes: [3, 5]
             ),
@@ -85,4 +85,4 @@ final class CounterTests: XCTestCase {
     }
 }
 
-extension CounterViewState: Modifiable {}
+extension CounterFeatureState: Modifiable {}

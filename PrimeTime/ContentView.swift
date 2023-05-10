@@ -12,15 +12,21 @@ import PrimeModal
 import SwiftUI
 
 struct ContentView: View {
-    @ObservedObject var store: Store<AppState, AppAction>
+    private let store: Store<AppState, AppAction>
+
+    init(store: Store<AppState, AppAction>) {
+        print("ContentView.init")
+        self.store = store
+    }
 
     var body: some View {
-        NavigationView {
+        print("ContentView.body")
+        return NavigationView {
             List {
                 NavigationLink(
                     destination: CounterView(
                         store: store
-                            .view(
+                            .scope(
                                 value: { $0.counterView },
                                 action: { .counterView($0) }
                             )
@@ -31,7 +37,7 @@ struct ContentView: View {
                 NavigationLink(
                     destination: CounterView(
                         store: store
-                            .view(
+                            .scope(
                                 value: { $0.counterView },
                                 action: { .counterView($0) }
                             )
@@ -42,7 +48,7 @@ struct ContentView: View {
                 NavigationLink(
                     destination: FavoritePrimesView(
                         store: store
-                            .view(
+                            .scope(
                                 value: { $0.favoritePrimesState },
                                 action: { .favoritePrimes($0) }
                             )
@@ -54,7 +60,6 @@ struct ContentView: View {
             .navigationTitle(Text("State Management"))
         }
         .navigationViewStyle(.stack)
-        .environmentObject(store)
     }
 }
 

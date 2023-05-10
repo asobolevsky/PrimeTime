@@ -156,15 +156,19 @@ public func favoritePrimesReducer(
 // MARK: - Views
 
 public struct FavoritePrimesView: View {
-    @ObservedObject private var store: Store<FavoritePrimesState, FavoritePrimesAction>
+    private let store: Store<FavoritePrimesState, FavoritePrimesAction>
+    @ObservedObject var viewStore: ViewStore<FavoritePrimesState>
 
     public init(store: Store<FavoritePrimesState, FavoritePrimesAction>) {
+        print("FavoritePrimesView.init")
         self.store = store
+        self.viewStore = store.view
     }
 
     public var body: some View {
-        List {
-            ForEach(store.value.primes, id: \.self) { number in
+        print("FavoritePrimesView.body")
+        return List {
+            ForEach(viewStore.value.primes, id: \.self) { number in
                 Button("\(number)") {
                     store.send(.favoritePrimeTapped(number))
                 }
@@ -182,7 +186,7 @@ public struct FavoritePrimesView: View {
                 }
             }
         }
-        .alert(item: .constant(store.value.nthPrime)) { nthPrime in
+        .alert(item: .constant(viewStore.value.nthPrime)) { nthPrime in
             Alert(
                 title: Text("The \(ordinal(nthPrime.n)) prime is \(nthPrime.prime ?? 0)"),
                 dismissButton: .default(Text("OK")) { store.send(.alertDismissButtonTapped) }

@@ -21,7 +21,8 @@ struct AppState: Equatable {
     var loggedInUser: User? = nil
     var activityFeed: [Activity] = []
     var nthPrime: NthPrime? = nil
-    var nthPrimeButtonDisabled: Bool = false
+    var isNthPrimeRequestInFlight: Bool = false
+    var isPrimeModalShown: Bool = false
 
     struct Activity: Equatable {
         var timestamp = Date()
@@ -50,20 +51,22 @@ extension AppState {
         }
     }
 
-    var counterView: CounterViewState {
+    var counterView: CounterFeatureState {
         get {
-            CounterViewState(
+            CounterFeatureState(
                 count: count,
                 favoritePrimes: favoritePrimes,
                 nthPrime: nthPrime,
-                nthPrimeButtonDisabled: nthPrimeButtonDisabled
+                isNthPrimeRequestInFlight: isNthPrimeRequestInFlight,
+                isPrimeModalShown: isPrimeModalShown
             )
         }
         set {
             self.count = newValue.count
             self.favoritePrimes = newValue.favoritePrimes
             self.nthPrime = newValue.nthPrime
-            self.nthPrimeButtonDisabled = newValue.nthPrimeButtonDisabled
+            self.isNthPrimeRequestInFlight = newValue.isNthPrimeRequestInFlight
+            self.isPrimeModalShown = newValue.isPrimeModalShown
         }
     }
 }
@@ -71,10 +74,10 @@ extension AppState {
 // MARK: - Actions
 
 enum AppAction: Equatable {
-    case counterView(CounterViewAction)
+    case counterView(CounterFeatureAction)
     case favoritePrimes(FavoritePrimesAction)
 
-    var counterView: CounterViewAction? {
+    var counterView: CounterFeatureAction? {
         get {
             guard case let .counterView(value) = self else { return nil }
             return value
@@ -152,4 +155,5 @@ let _appReducer: Reducer<AppState, AppAction, AppEnvironment> = combine(
 let appReducer = with(
     _appReducer,
     compose(logging, activityFeed)
+//    activityFeed
 )
