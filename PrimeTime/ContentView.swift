@@ -15,12 +15,10 @@ struct ContentView: View {
     private let store: Store<AppState, AppAction>
 
     init(store: Store<AppState, AppAction>) {
-        print("ContentView.init")
         self.store = store
     }
 
     var body: some View {
-        print("ContentView.body")
         return NavigationView {
             List {
                 NavigationLink(
@@ -67,8 +65,8 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         let store = Store(
             initialValue: AppState(),
-            environment: AppEnvironment.mock,
-            reducer: appReducer
+            reducer: appReducer,
+            environment: AppEnvironment.mock
         )
         ContentView(store: store)
     }

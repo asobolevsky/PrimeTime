@@ -154,6 +154,6 @@ let _appReducer: Reducer<AppState, AppAction, AppEnvironment> = combine(
 
 let appReducer = with(
     _appReducer,
-    compose(logging, activityFeed)
-//    activityFeed
+//    compose(logging, activityFeed)
+    activityFeed
 )

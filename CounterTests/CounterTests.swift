@@ -40,13 +40,13 @@ final class CounterTests: XCTestCase {
 
     func testNthPrimeButtonHappyFlow() {
         assert(
-            initialValue: CounterFeatureState(count: 4, nthPrime: nil, nthPrimeButtonDisabled: false),
+            initialValue: CounterFeatureState(count: 4, nthPrime: nil, isNthPrimeRequestInFlight: false),
             reducer: counterViewReducer,
             environment: { _ in .sync { 17 } },
             steps: [
-                Step(.send, .counter(.nthPrimeButtonTapped), { $0.nthPrimeButtonDisabled = true }),
+                Step(.send, .counter(.requestNthPrime), { $0.isNthPrimeRequestInFlight = true }),
                 Step(.receive, .counter(.nthPrimeResponse(n: 4, prime: 17)), {
-                    $0.nthPrimeButtonDisabled = false
+                    $0.isNthPrimeRequestInFlight = false
                     $0.nthPrime = NthPrime(n: 4, prime: 17)
                 }),
                 Step(.send, .counter(.alertDismissButtonTapped), { $0.nthPrime = nil }),
@@ -56,13 +56,13 @@ final class CounterTests: XCTestCase {
 
     func testNthPrimeButtonUnhappyFlow() {
         assert(
-            initialValue: CounterFeatureState(count: 4, nthPrime: nil, nthPrimeButtonDisabled: false),
+            initialValue: CounterFeatureState(count: 4, nthPrime: nil, isNthPrimeRequestInFlight: false),
             reducer: counterViewReducer,
             environment: { _ in .sync { nil } },
             steps: [
-                Step(.send, .counter(.nthPrimeButtonTapped), { $0.nthPrimeButtonDisabled = true }),
+                Step(.send, .counter(.requestNthPrime), { $0.isNthPrimeRequestInFlight = true }),
                 Step(.receive, .counter(.nthPrimeResponse(n: 4, prime: nil)), {
-                    $0.nthPrimeButtonDisabled = false
+                    $0.isNthPrimeRequestInFlight = false
                     $0.nthPrime = NthPrime(n: 4)
                 }),
             ]

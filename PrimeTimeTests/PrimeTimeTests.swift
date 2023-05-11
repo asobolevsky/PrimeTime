@@ -50,9 +50,9 @@ final class PrimeTimeTests: XCTestCase {
                 fileClient: fileClient,
                 nthPrime: { _ in .sync { 17 } }
             ), steps: [
-                Step(.send, .counterView(.counter(.nthPrimeButtonTapped))) { $0.nthPrimeButtonDisabled = true },
+                Step(.send, .counterView(.counter(.requestNthPrime))) { $0.isNthPrimeRequestInFlight = true },
                 Step(.receive, .counterView(.counter(.nthPrimeResponse(n: 4, prime: 17)))) {
-                    $0.nthPrimeButtonDisabled = false
+                    $0.isNthPrimeRequestInFlight = false
                     $0.nthPrime = NthPrime(n: 4, prime: 17)
                 },
                 Step(.send, .favoritePrimes(.loadFavoritePrimes)),
@@ -61,7 +61,13 @@ final class PrimeTimeTests: XCTestCase {
     }
 
     func testSnapshots() {
-        let store = Store(initialValue: CounterFeatureState(), environment: { _ in .sync { nil } }, reducer: counterViewReducer)
+        let store = Store(initialValue: CounterFeatureState(), reducer: counterViewReducer, environment: { _ in .sync { nil } })
+        let counterViewStore = store
+            .scope(value: CounterView.ViewState.init, action: CounterFeatureAction.init)
+            .view
+        let primeModalViewStore = store
+            .scope(value: { $0.primeModal }, action: { .primeModal($0) } )
+            .view(removeDuplciates: ==)
         let view = CounterView(store: store)
 
         let vc = UIHostingController(rootView: view)
@@ -70,13 +76,13 @@ final class PrimeTimeTests: XCTestCase {
         diffTool = "ksdiff"
         assertSnapshot(matching: vc, as: .windowedImage)
 
-        store.send(.counter(.increment))
+        counterViewStore.send(.increment)
         assertSnapshot(matching: vc, as: .windowedImage)
 
-        store.send(.counter(.increment))
+        counterViewStore.send(.increment)
         assertSnapshot(matching: vc, as: .windowedImage)
 
-        store.send(.counter(.nthPrimeButtonTapped))
+        counterViewStore.send(.nthPrimeButtonTapped)
         assertSnapshot(matching: vc, as: .windowedImage)
 
         var expectation = self.expectation(description: "wait")
@@ -86,7 +92,7 @@ final class PrimeTimeTests: XCTestCase {
         self.wait(for: [expectation], timeout: 0.5)
         assertSnapshot(matching: vc, as: .windowedImage)
 
-        store.send(.counter(.alertDismissButtonTapped))
+        counterViewStore.send(.alertDismissButtonTapped)
         expectation = self.expectation(description: "wait")
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
           expectation.fulfill()
@@ -94,13 +100,13 @@ final class PrimeTimeTests: XCTestCase {
         self.wait(for: [expectation], timeout: 0.5)
         assertSnapshot(matching: vc, as: .windowedImage)
 
-        store.send(.counter(.nthPrimeButtonTapped))
+        counterViewStore.send(.isPrimeButtonTapped)
         assertSnapshot(matching: vc, as: .windowedImage)
 
-        store.send(.primeModal(.saveFavoritePrime))
+        primeModalViewStore.send(.saveFavoritePrime)
         assertSnapshot(matching: vc, as: .windowedImage)
 
-        store.send(.counter(.alertDismissButtonTapped))
+        counterViewStore.send(.primeModalDismissed)
         assertSnapshot(matching: vc, as: .windowedImage)
       }
 

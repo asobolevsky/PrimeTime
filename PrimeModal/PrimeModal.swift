@@ -48,10 +48,9 @@ public struct PrimeCheckView: View {
     }
 
     private let store: Store<PrimeModalState, PrimeModalAction>
-    @ObservedObject var viewStore: ViewStore<ViewState>
+    @ObservedObject var viewStore: ViewStore<ViewState, PrimeModalAction>
 
     public init(store: Store<PrimeModalState, PrimeModalAction>) {
-        print("PrimeCheckView.init")
         self.store = store
         self.viewStore = store
             .scope(value: ViewState.init(primeModalState:), action: { $0 })
@@ -59,20 +58,19 @@ public struct PrimeCheckView: View {
     }
 
     public var body: some View {
-        print("PrimeCheckView.body")
         return VStack {
             if isPrime(viewStore.value.count) {
                 Text("\(viewStore.value.count) is prime 🎉")
 
                 if viewStore.value.isFavorite {
                     Button {
-                        store.send(.deleteFavoritePrime)
+                        viewStore.send(.deleteFavoritePrime)
                     } label: {
                         Text("Delete from favorite primes")
                     }
                 } else {
                     Button {
-                        store.send(.saveFavoritePrime)
+                        viewStore.send(.saveFavoritePrime)
                     } label: {
                         Text("Save to favorite primes")
                     }

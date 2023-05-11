@@ -157,39 +157,37 @@ public func favoritePrimesReducer(
 
 public struct FavoritePrimesView: View {
     private let store: Store<FavoritePrimesState, FavoritePrimesAction>
-    @ObservedObject var viewStore: ViewStore<FavoritePrimesState>
+    @ObservedObject var viewStore: ViewStore<FavoritePrimesState, FavoritePrimesAction>
 
     public init(store: Store<FavoritePrimesState, FavoritePrimesAction>) {
-        print("FavoritePrimesView.init")
         self.store = store
         self.viewStore = store.view
     }
 
     public var body: some View {
-        print("FavoritePrimesView.body")
         return List {
             ForEach(viewStore.value.primes, id: \.self) { number in
                 Button("\(number)") {
-                    store.send(.favoritePrimeTapped(number))
+                    viewStore.send(.favoritePrimeTapped(number))
                 }
             }
             .onDelete { indexSet in
-                store.send(.deleteFavoritePrimes(indexSet))
+                viewStore.send(.deleteFavoritePrimes(indexSet))
             }
         }
         .navigationTitle("Favorite Primes")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 HStack {
-                    Button("Load") { store.send(.loadFavoritePrimes) }
-                    Button("Save") { store.send(.saveFavoritePrimes) }
+                    Button("Load") { viewStore.send(.loadFavoritePrimes) }
+                    Button("Save") { viewStore.send(.saveFavoritePrimes) }
                 }
             }
         }
         .alert(item: .constant(viewStore.value.nthPrime)) { nthPrime in
             Alert(
                 title: Text("The \(ordinal(nthPrime.n)) prime is \(nthPrime.prime ?? 0)"),
-                dismissButton: .default(Text("OK")) { store.send(.alertDismissButtonTapped) }
+                dismissButton: .default(Text("OK")) { viewStore.send(.alertDismissButtonTapped) }
             )
         }
     }
