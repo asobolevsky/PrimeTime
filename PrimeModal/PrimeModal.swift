@@ -23,11 +23,8 @@ public enum PrimeModalAction: Equatable {
 
 // MARK: - Reducers
 
-public func primeModalReducer(
-    state: inout PrimeModalState,
-    action: PrimeModalAction,
-    environment: Void
-) -> [Effect<PrimeModalAction>] {
+public typealias PrimeModalReducer = Reducer<PrimeModalState, PrimeModalAction, Void>
+public let primeModalReducer = PrimeModalReducer { state, action, _ in
     switch action {
     case .saveFavoritePrime:
         state.favoritePrimes.append(state.count)
@@ -59,10 +56,10 @@ public struct PrimeCheckView: View {
 
     public var body: some View {
         return VStack {
-            if isPrime(viewStore.value.count) {
-                Text("\(viewStore.value.count) is prime 🎉")
+            if isPrime(viewStore.count) {
+                Text("\(viewStore.count) is prime 🎉")
 
-                if viewStore.value.isFavorite {
+                if viewStore.isFavorite {
                     Button {
                         viewStore.send(.deleteFavoritePrime)
                     } label: {
@@ -76,7 +73,7 @@ public struct PrimeCheckView: View {
                     }
                 }
             } else {
-                Text("\(viewStore.value.count) is not prime :(")
+                Text("\(viewStore.count) is not prime :(")
             }
         }
     }

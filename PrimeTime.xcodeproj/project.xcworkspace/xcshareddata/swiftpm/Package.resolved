@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/asobolevsky/ComposableArchitechture",
       "state" : {
-        "revision" : "e2a06f8e2efeb6f0e4360bafaddf1f23cea6ed51",
-        "version" : "0.6.0"
+        "revision" : "965d49a77c7802e7954c09bf418b6bbb329f8485",
+        "version" : "0.7.4"
       }
     },
     {

@@ -7,47 +7,62 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "FEE8C626-D28F-4A28-AA74-C6E9DD092DC2"
+            uuid = "954B694B-4DCF-4AC4-A33B-6D3634863536"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "PrimeTime/ContentView.swift"
+            filePath = "Counter/Counter.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "19"
-            endingLineNumber = "19"
-            landmarkName = "init(store:)"
-            landmarkType = "7">
+            startingLineNumber = "251"
+            endingLineNumber = "251"
+            landmarkName = "body"
+            landmarkType = "24">
             <Locations>
                <Location
-                  uuid = "FEE8C626-D28F-4A28-AA74-C6E9DD092DC2 - 61f3f2220039b1ad"
+                  uuid = "954B694B-4DCF-4AC4-A33B-6D3634863536 - f960ded07cbca565"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "closure #1 () -&gt; SwiftUI.TupleView&lt;(SwiftUI.NavigationLink&lt;SwiftUI.Text, Counter.CounterView&gt;, SwiftUI.NavigationLink&lt;SwiftUI.Text, Counter.CounterView&gt;, SwiftUI.NavigationLink&lt;SwiftUI.Text, FavoritePrimes.FavoritePrimesView&gt;)&gt; in closure #1 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.navigationTitle(SwiftUI.Text) -&gt; some&gt;&gt;.0 in PrimeTime.ContentView.body.getter : some"
-                  moduleName = "PrimeTime"
+                  symbolName = "Counter.CounterView.body.getter : some"
+                  moduleName = "Counter"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/aleksei/Developer/tuts/ios/pointfree/PrimeTime/PrimeTime/ContentView.swift"
+                  urlString = "file:///Users/aleksei/Developer/tuts/ios/pointfree/PrimeTime/Counter/Counter.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "20"
-                  endingLineNumber = "20"
-                  offsetFromSymbolStart = "504">
+                  startingLineNumber = "251"
+                  endingLineNumber = "251"
+                  offsetFromSymbolStart = "1372">
                </Location>
                <Location
-                  uuid = "FEE8C626-D28F-4A28-AA74-C6E9DD092DC2 - cb6f20cbc15c1ae6"
+                  uuid = "954B694B-4DCF-4AC4-A33B-6D3634863536 - f960ded07cbca565"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "PrimeTime.ContentView.init(store: ComposableArchitechture.Store&lt;PrimeTime.AppState, PrimeTime.AppAction&gt;) -&gt; PrimeTime.ContentView"
-                  moduleName = "PrimeTime"
+                  symbolName = "Counter.CounterView.body.getter : some"
+                  moduleName = "Counter"
                   usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/aleksei/Developer/tuts/ios/pointfree/PrimeTime/PrimeTime/ContentView.swift"
+                  urlString = "file:///Users/aleksei/Developer/tuts/ios/pointfree/PrimeTime/Counter/Counter.swift"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "20"
-                  endingLineNumber = "20"
-                  offsetFromSymbolStart = "280">
+                  startingLineNumber = "251"
+                  endingLineNumber = "251"
+                  offsetFromSymbolStart = "1408">
+               </Location>
+               <Location
+                  uuid = "954B694B-4DCF-4AC4-A33B-6D3634863536 - 34cc408839f46ea8"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #3 (CommonState.NthPrime) -&gt; SwiftUI.Alert in Counter.CounterView.body.getter : some"
+                  moduleName = "Counter"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/aleksei/Developer/tuts/ios/pointfree/PrimeTime/Counter/Counter.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "252"
+                  endingLineNumber = "252"
+                  offsetFromSymbolStart = "240">
                </Location>
             </Locations>
          </BreakpointContent>

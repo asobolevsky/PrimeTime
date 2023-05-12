@@ -95,11 +95,8 @@ private func documentFileUrl(with fileName: String) -> URL {
     return documentsUrl.appendingPathComponent(fileName)
 }
 
-public func favoritePrimesReducer(
-    state: inout FavoritePrimesState,
-    action: FavoritePrimesAction,
-    environment: FavoritePrimesEnvironment
-) -> [Effect<FavoritePrimesAction>] {
+public typealias FavoritePrimesReducer = Reducer<FavoritePrimesState, FavoritePrimesAction, FavoritePrimesEnvironment>
+public let favoritePrimesReducer = FavoritePrimesReducer { state, action, environment in
     switch action {
     case let .deleteFavoritePrimes(indexSet):
         indexSet.forEach { state.primes.remove(at: $0) }
@@ -166,7 +163,7 @@ public struct FavoritePrimesView: View {
 
     public var body: some View {
         return List {
-            ForEach(viewStore.value.primes, id: \.self) { number in
+            ForEach(viewStore.primes, id: \.self) { number in
                 Button("\(number)") {
                     viewStore.send(.favoritePrimeTapped(number))
                 }
@@ -184,11 +181,8 @@ public struct FavoritePrimesView: View {
                 }
             }
         }
-        .alert(item: .constant(viewStore.value.nthPrime)) { nthPrime in
-            Alert(
-                title: Text("The \(ordinal(nthPrime.n)) prime is \(nthPrime.prime ?? 0)"),
-                dismissButton: .default(Text("OK")) { viewStore.send(.alertDismissButtonTapped) }
-            )
+        .alert(item: viewStore.binding(get: \.nthPrime, send: .alertDismissButtonTapped)) { nthPrime in
+            Alert(title: Text("The \(ordinal(nthPrime.n)) prime is \(nthPrime.prime ?? 0)"))
         }
     }
 }

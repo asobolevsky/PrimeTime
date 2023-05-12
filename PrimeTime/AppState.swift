@@ -114,46 +114,43 @@ extension AppEnvironment {
 
 // MARK: - Reducers
 
-func activityFeed(
-    _ reducer: @escaping Reducer<AppState, AppAction, AppEnvironment>
-) -> Reducer<AppState, AppAction, AppEnvironment> {
-    return { state, action, environment in
-        switch action {
-        case .counterView(.primeModal(.deleteFavoritePrime)):
-            state.activityFeed.append(.init(type: .deletedFavoritePrime(state.count)))
+extension Reducer where Value == AppState, Action == AppAction, Environment == AppEnvironment {
+    func activityFeed() -> Reducer {
+        return .init { state, action, environment in
+            switch action {
+            case .counterView(.primeModal(.deleteFavoritePrime)):
+                state.activityFeed.append(.init(type: .deletedFavoritePrime(state.count)))
 
-        case .counterView(.primeModal(.saveFavoritePrime)):
-            state.activityFeed.append(.init(type: .addedFavoritePrime(state.count)))
+            case .counterView(.primeModal(.saveFavoritePrime)):
+                state.activityFeed.append(.init(type: .addedFavoritePrime(state.count)))
 
-        case let .favoritePrimes(.deleteFavoritePrimes(indexSet)):
-            for index in indexSet {
-                state.activityFeed.append(.init(type: .deletedFavoritePrime(state.favoritePrimes[index])))
+            case let .favoritePrimes(.deleteFavoritePrimes(indexSet)):
+                for index in indexSet {
+                    state.activityFeed.append(.init(type: .deletedFavoritePrime(state.favoritePrimes[index])))
+                }
+
+            default: break
             }
 
-        default: break
+            return self(&state, action, environment)
         }
-
-        return reducer(&state, action, environment)
     }
 }
 
-let _appReducer: Reducer<AppState, AppAction, AppEnvironment> = combine(
-    pullback(
-        counterViewReducer,
+typealias AppReducer = Reducer<AppState, AppAction, AppEnvironment>
+let _appReducer: AppReducer = Reducer.combine(
+    counterViewReducer.pullback(
         value: \.counterView,
         action: /AppAction.counterView,
         environment: { $0.nthPrime }
     ),
-    pullback(
-        favoritePrimesReducer,
+    favoritePrimesReducer.pullback(
         value: \.favoritePrimesState,
         action: /AppAction.favoritePrimes,
         environment: { ($0.fileClient, $0.nthPrime) }
     )
 )
 
-let appReducer = with(
-    _appReducer,
-//    compose(logging, activityFeed)
-    activityFeed
-)
+let appReducer: AppReducer = _appReducer
+    .activityFeed()
+    .logging()

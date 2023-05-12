@@ -97,11 +97,8 @@ public enum CounterFeatureAction: Equatable {
 
 // MARK: - Reducers
 
-private func counterReducer(
-    state: inout CounterState,
-    action: CounterAction,
-    environment: CounterEnvironment
-) -> [Effect<CounterAction>] {
+typealias CounterReducer = Reducer<CounterState, CounterAction, CounterEnvironment>
+private let counterReducer = CounterReducer { state, action, environment in
     switch action {
     case .increment:
         state.count += 1
@@ -180,15 +177,14 @@ private func isPrime(_ p: Int) -> Bool {
     return true
 }
 
-public let counterViewReducer: Reducer<CounterFeatureState, CounterFeatureAction, CounterEnvironment> = combine(
-    pullback(
-        counterReducer,
+public typealias CounterViewReducer = Reducer<CounterFeatureState, CounterFeatureAction, CounterEnvironment>
+public let counterViewReducer: CounterViewReducer = Reducer.combine(
+    counterReducer.pullback(
         value: \.counter,
         action: /CounterFeatureAction.counter,
         environment: { $0 }
     ),
-    pullback(
-        primeModalReducer,
+    primeModalReducer.pullback(
         value: \.primeModal,
         action: /CounterFeatureAction.primeModal,
         environment: { _ in () }
@@ -232,21 +228,18 @@ public struct CounterView: View {
         return VStack {
             HStack {
                 Button("-") { viewStore.send(.decrement) }
-                Text("\(viewStore.value.count)")
+                Text("\(viewStore.count)")
                 Button("+") { viewStore.send(.increment) }
             }
             Button("Is this prime?", action: { viewStore.send(.isPrimeButtonTapped) })
-            Button(viewStore.value.nthPrimeButtonTitle) {
+            Button(viewStore.nthPrimeButtonTitle) {
                 viewStore.send(.nthPrimeButtonTapped)
             }
-            .disabled(viewStore.value.nthPrimeButtonDisabled)
+            .disabled(viewStore.nthPrimeButtonDisabled)
         }
         .font(.title)
         .navigationTitle(Text("Counter Demo"))
-        .sheet(
-            isPresented: .constant(viewStore.value.isPrimeModalShown),
-            onDismiss: { viewStore.send(.primeModalDismissed) }
-        ) {
+        .sheet(isPresented: viewStore.binding(get: \.isPrimeModalShown, send: .primeModalDismissed)) {
             PrimeCheckView(
                 store: store
                     .scope(
@@ -255,11 +248,8 @@ public struct CounterView: View {
                     )
             )
         }
-        .alert(item: .constant(viewStore.value.nthPrime)) { nthPrime in
-            Alert(
-                title: Text("The \(ordinal(nthPrime.n)) prime is \(nthPrime.prime ?? 0)"),
-                dismissButton: .default(Text("OK")) { viewStore.send(.alertDismissButtonTapped) }
-            )
+        .alert(item: viewStore.binding(get: \.nthPrime, send: .alertDismissButtonTapped)) { nthPrime in
+            Alert(title: Text("The \(ordinal(nthPrime.n)) prime is \(nthPrime.prime ?? 0)"))
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.white)
